@@ -1,9 +1,9 @@
-const path = require("path");
-const fs = require("fs-extra");
-const inquirer = require("inquirer");
-const validateProjectName = require("validate-npm-package-name");
-const generator = require("./generator");
-const { chalk, clearConsole } = require("utils");
+const path = require('path');
+const fs = require('fs-extra');
+const inquirer = require('inquirer');
+const validateProjectName = require('validate-npm-package-name');
+const generator = require('./generator');
+const { chalk, clearConsole } = require('@create-toimc-app/utils');
 
 /**
  * 创建项目
@@ -23,16 +23,16 @@ module.exports = async function (name, options) {
     console.error(chalk.red(`Invalid project name: "${name}"`));
     checkName.errors &&
       checkName.errors.forEach((err) => {
-        console.error(chalk.red.dim("Error: " + err));
+        console.error(chalk.red.dim('Error: ' + err));
       });
     checkName.warnings &&
       checkName.warnings.forEach((warn) => {
-        console.error(chalk.red.dim("Warning: " + warn));
+        console.error(chalk.red.dim('Warning: ' + warn));
       });
     return;
   }
 
-  const cliVersion = require("../package.json").version;
+  const cliVersion = require('../package.json').version;
   await clearConsole(chalk.bold.blue(`CLI v${cliVersion}`));
 
   if (fs.existsSync(targetDir)) {
@@ -42,20 +42,20 @@ module.exports = async function (name, options) {
     } else {
       const params = [
         {
-          name: "action",
-          type: "list",
+          name: 'action',
+          type: 'list',
           message: `Target directory ${targetDir} already exists. Pick an action:`,
           choices: [
-            { name: "Overwrite", value: "overwrite" },
-            { name: "Merge", value: "merge" },
-            { name: "Cancel", value: false },
+            { name: 'Overwrite', value: 'overwrite' },
+            { name: 'Merge', value: 'merge' },
+            { name: 'Cancel', value: false },
           ],
         },
       ];
       let data = await inquirer.prompt(params);
       if (!data.action) {
         return;
-      } else if (data.action === "overwrite") {
+      } else if (data.action === 'overwrite') {
         console.log(`\nRemoving ${chalk.cyan(targetDir)}...`);
         await fs.remove(targetDir);
       }

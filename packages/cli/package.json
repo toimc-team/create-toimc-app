@@ -1,5 +1,5 @@
 {
-  "name": "create-toimc-app",
+  "name": "@create-toimc-app/cli",
   "version": "1.0.0",
   "description": "create-toimc-app cli",
   "author": "白叶 <1511455676@qq.com>",
@@ -23,7 +23,7 @@
     "download-git-repo": "^3.0.2",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.4",
-    "utils": "^1.0.0",
+    "@create-toimc-app/utils": "^1.0.0",
     "validate-npm-package-name": "^4.0.0"
   },
   "engines": {

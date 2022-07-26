@@ -1,7 +1,7 @@
-const inquirer = require("inquirer");
+const inquirer = require('inquirer');
 // const util = require("util");
-const path = require("path");
-const downloadGitRepo = require("download-git-repo");
+const path = require('path');
+const downloadGitRepo = require('download-git-repo');
 const {
   logWithSpinner,
   stopSpinner,
@@ -13,30 +13,28 @@ const {
   hasProjectYarn,
   hasPnpm3OrLater,
   hasProjectPnpm,
-  hasGit, 
+  hasGit,
   hasProjectGit,
   getRepoList,
   getTagList,
   GIT_NAME,
-} = require("utils");
+} = require('@create-toimc-app/utils');
 
-
-const shouldInitGit = cliOptions => {
+const shouldInitGit = (cliOptions) => {
   if (!hasGit()) {
-    return false
+    return false;
   }
   // --git
   if (cliOptions.forceGit) {
-    return true
+    return true;
   }
   // --no-git
   if (cliOptions.git === false || cliOptions.git === 'false') {
-    return false
+    return false;
   }
   // default: true unless already in a git repo
-  return !hasProjectGit(this.context)
-}
-
+  return !hasProjectGit(this.context);
+};
 
 // 获取并选择模板
 async function getRepo() {
@@ -46,10 +44,10 @@ async function getRepo() {
   if (!repoList) return;
   const repos = repoList.map((item) => item.name);
   const { repo } = await inquirer.prompt({
-    name: "repo",
-    type: "list",
+    name: 'repo',
+    type: 'list',
     choices: repos,
-    message: " Please choose a template to create project",
+    message: ' Please choose a template to create project',
   });
   return repo;
 }
@@ -59,20 +57,20 @@ async function getTag(repo) {
   logWithSpinner(`Fetching version...`);
   const tags = await getTagList(repo);
   stopSpinner();
-  if (!tags || tags.length === 0) return "";
+  if (!tags || tags.length === 0) return '';
   const tagsList = tags.map((item) => item.name);
   const { tag } = await inquirer.prompt({
-    name: "tag",
-    type: "list",
+    name: 'tag',
+    type: 'list',
     choices: tagsList,
-    message: " Place choose a tag to create project",
+    message: ' Place choose a tag to create project',
   });
   return tag;
 }
 
 // 下载
 async function download(repo, tag, targetDir) {
-  const requestUrl = `${GIT_NAME}/${repo}${tag ? "#" + tag : ""}`;
+  const requestUrl = `${GIT_NAME}/${repo}${tag ? '#' + tag : ''}`;
   logWithSpinner(`Downloading template...`);
   let res = await new Promise((resolve, reject) => {
     downloadGitRepo(
@@ -83,7 +81,7 @@ async function download(repo, tag, targetDir) {
       },
       (err) => {
         if (err) {
-          failSpinner(" Downloading failed: \n" + err.message);
+          failSpinner(' Downloading failed: \n' + err.message);
           reject(err);
         } else {
           resolve(true);
@@ -101,26 +99,27 @@ async function install(cwd, pm) {
 
   let packageManager;
   if (pm) {
-    packageManager = pm
+    packageManager = pm;
   } else if (cwd) {
     if (hasProjectYarn(cwd)) {
-      packageManager = 'yarn'
+      packageManager = 'yarn';
     } else if (hasProjectPnpm(cwd)) {
-      packageManager = 'pnpm'
+      packageManager = 'pnpm';
     } else if (hasProjectNpm(cwd)) {
-      packageManager = 'npm'
+      packageManager = 'npm';
     } else {
-      packageManager = (hasYarn() ? "yarn" : null) || (hasPnpm3OrLater() ? "pnpm" : "npm");
+      packageManager =
+        (hasYarn() ? 'yarn' : null) || (hasPnpm3OrLater() ? 'pnpm' : 'npm');
     }
   }
 
   let installRes = await new Promise(async (resolve, reject) => {
     try {
-      await execa(pm || "npm", ["install", "--loglevel", "error"], { cwd });
+      await execa(pm || 'npm', ['install', '--loglevel', 'error'], { cwd });
       // process.stdout.write(stdout);
       resolve();
     } catch (e) {
-      failSpinner("Installing failed: \n" + e);
+      failSpinner('Installing failed: \n' + e);
       reject(e);
     }
   });
@@ -137,8 +136,8 @@ async function generator(projectName, cliOptions, targetDir) {
     if (dres === true) {
       // 初始化git
       if (shouldInitGit(cliOptions)) {
-        logWithSpinner(`Initializing git repository...`)
-        await execa('git init', [], { cwd: targetDir })
+        logWithSpinner(`Initializing git repository...`);
+        await execa('git init', [], { cwd: targetDir });
         stopSpinner();
       }
 
@@ -149,8 +148,8 @@ async function generator(projectName, cliOptions, targetDir) {
       );
       console.log(
         `👉  Get started with the following commands:\n\n` +
-          chalk.cyan(` ${chalk.gray("$")} cd ${projectName}\n`) +
-          chalk.cyan(` ${chalk.gray("$")} npm run serve`)
+          chalk.cyan(` ${chalk.gray('$')} cd ${projectName}\n`) +
+          chalk.cyan(` ${chalk.gray('$')} npm run serve`)
       );
     }
   }

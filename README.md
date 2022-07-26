@@ -1,18 +1,18 @@
-# create-toimc-app
+# create-toimc-app 脚手架开发
 
-## Install
+## 安装项目依赖lerna
 
 ```
 npm install
 ```
 
-## Link
+## 建立软链接
 ```
 cd packages/cli
 npm link
 ```
 
-## Test
+## 创建项目
 ```
 create-toimc-app create [options] [name]
 ```
