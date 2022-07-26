@@ -6,13 +6,24 @@
 npm install
 ```
 
-## 建立软链接
+## 执行开发环境
 ```
-cd packages/cli
-npm link
+npm run dev
 ```
 
-## 创建项目
+## 命令行使用
+
+### 查看版本号
+```
+create-toimc-app -V
+```
+
+### 查看帮助
+```
+create-toimc-app -h
+```
+
+### 创建项目
 ```
 create-toimc-app create [options] [name]
 ```

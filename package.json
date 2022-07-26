@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "npx lerna bootstrap&&cd packages/cli&&npm link",
+    "bootstrap": "npx lerna bootstrap",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
