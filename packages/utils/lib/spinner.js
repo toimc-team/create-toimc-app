@@ -1,11 +1,11 @@
-const ora = require('ora')
-const chalk = require('chalk')
+import ora from 'ora'
+import chalk from 'chalk'
 
 const spinner = ora()
 let lastMsg = null
 let isPaused = false
 
-exports.logWithSpinner = (symbol, msg) => {
+export const logWithSpinner = (symbol, msg) => {
   if (!msg) {
     msg = symbol
     symbol = chalk.green('✔')
@@ -24,7 +24,7 @@ exports.logWithSpinner = (symbol, msg) => {
   spinner.start()
 }
 
-exports.stopSpinner = (persist) => {
+export const stopSpinner = (persist) => {
   if (!spinner.isSpinning) {
     return
   }
@@ -40,20 +40,20 @@ exports.stopSpinner = (persist) => {
   lastMsg = null
 }
 
-exports.pauseSpinner = () => {
+export const pauseSpinner = () => {
   if (spinner.isSpinning) {
     spinner.stop()
     isPaused = true
   }
 }
 
-exports.resumeSpinner = () => {
+export const resumeSpinner = () => {
   if (isPaused) {
     spinner.start()
     isPaused = false
   }
 }
 
-exports.failSpinner = (text) => {
+export const failSpinner = (text) => {
   spinner.fail(text)
 }

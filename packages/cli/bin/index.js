@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-require("../lib")()
+// require("../lib")()
+import lib from '../lib/index.js'
+lib()

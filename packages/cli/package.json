@@ -4,6 +4,7 @@
   "description": "create-toimc-app cli",
   "author": "白叶 <1511455676@qq.com>",
   "homepage": "",
+  "type": "module",
   "license": "ISC",
   "bin": {
     "create-toimc-app": "bin/index.js"
@@ -19,11 +20,12 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
+    "@create-toimc-app/utils": "^1.0.0",
     "commander": "^9.3.0",
+    "dirname-filename-esm": "^1.1.1",
     "download-git-repo": "^3.0.2",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.4",
-    "@create-toimc-app/utils": "^1.0.0",
     "validate-npm-package-name": "^4.0.0"
   },
   "engines": {

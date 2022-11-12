@@ -1,6 +1,11 @@
-const program = require('commander');
-const requiredVersion = require('../package.json').engines.node;
-const { semver, chalk } = require('@create-toimc-app/utils');
+import path from 'node:path'
+
+import { program } from 'commander'
+// import requiredVersion from '../package.json'
+
+import { semver, chalk } from '@create-toimc-app/utils'
+
+import { getPackage, create } from './create.js'
 
 function checkNodeVersion(wanted, id) {
   if (!semver.satisfies(process.version, wanted, { includePrerelease: true })) {
@@ -14,8 +19,8 @@ function checkNodeVersion(wanted, id) {
           wanted +
           '.\nPlease upgrade your Node version.'
       )
-    );
-    process.exit(1);
+    )
+    process.exit(1)
   }
 }
 
@@ -25,10 +30,7 @@ function registerCommand() {
     .command('create [name]')
     .description('create a new project powered by cli')
     .option('-f, --force', 'overwrite target directory if it exist')
-    .option(
-      '-p, --proxy <proxyUrl>',
-      'Use specified proxy when creating project'
-    )
+    .option('-p, --proxy <proxyUrl>', 'Use specified proxy when creating project')
     .option(
       '-m, --packageManager <command>',
       'Use specified npm client when installing dependencies'
@@ -38,30 +40,25 @@ function registerCommand() {
     .action((name, options) => {
       // --git makes commander to default git to true
       if (process.argv.includes('-g') || process.argv.includes('--git')) {
-        options.forceGit = true;
+        options.forceGit = true
       }
-      require('./create.js')(name, options);
-    });
+      // require('./create.js')(name, options)
+      create(name, options)
+    })
 
   program.command('test').action(() => {
-    require('./test.js')();
-  });
+    // require('./test.js')()
+  })
 
   // 获取版本号
-  program
-    .version(
-      `${require('../package.json').name} v${
-        require('../package.json').version
-      }`
-    )
-    .usage('<command> [option]');
+  program.version(`${getPackage().name} v${getPackage().version}`).usage('<command> [option]')
 
-  program.parse(process.argv);
+  program.parse(process.argv)
 }
 
 function index() {
-  checkNodeVersion(requiredVersion, 'cli');
-  registerCommand();
+  checkNodeVersion(getPackage().engines.node, 'cli')
+  registerCommand()
 }
 
-module.exports = index;
+export default index
