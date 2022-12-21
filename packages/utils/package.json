@@ -4,6 +4,7 @@
   "description": "create-toimc-app util",
   "author": "白叶 <1511455676@qq.com>",
   "homepage": "",
+  "type": "module",
   "license": "ISC",
   "main": "index.js",
   "directories": {

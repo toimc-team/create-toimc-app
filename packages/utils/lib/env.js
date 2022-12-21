@@ -1,15 +1,16 @@
-const { execSync } = require('child_process')
-const fs = require('fs')
-const path = require('path')
-const semver = require('semver')
-const LRU = require('lru-cache')
+import { execSync } from 'child_process'
+import fs from 'fs'
+import path from 'path'
+import semver from 'semver'
+import LRU from 'lru-cache'
 
-function checkYarn (result) {
-  if (result && !exports.hasYarn()) throw new Error(`The project seems to require yarn but it's not installed.`)
+function checkYarn(result) {
+  if (result && !hasYarn())
+    throw new Error(`The project seems to require yarn but it's not installed.`)
   return result
 }
 
-exports.hasYarn = () => {
+export const hasYarn = () => {
   try {
     execSync('yarn --version', { stdio: 'ignore' })
     return (_hasYarn = true)
@@ -22,7 +23,7 @@ const _yarnProjects = new LRU({
   max: 10,
   ttl: 1000
 })
-exports.hasProjectYarn = (cwd) => {
+export const hasProjectYarn = (cwd) => {
   if (_yarnProjects.has(cwd)) {
     return checkYarn(_yarnProjects.get(cwd))
   }
@@ -33,15 +34,17 @@ exports.hasProjectYarn = (cwd) => {
 }
 
 let _hasPnpm
-function checkPnpm (result) {
-  if (result && !exports.hasPnpm3OrLater()) {
-    throw new Error(`The project seems to require pnpm${_hasPnpm ? ' >= 3' : ''} but it's not installed.`)
+function checkPnpm(result) {
+  if (result && !hasPnpm3OrLater()) {
+    throw new Error(
+      `The project seems to require pnpm${_hasPnpm ? ' >= 3' : ''} but it's not installed.`
+    )
   }
   return result
 }
 
-function getPnpmVersion () {
-  let _pnpmVersion;
+function getPnpmVersion() {
+  let _pnpmVersion
   try {
     _pnpmVersion = execSync('pnpm --version', {
       stdio: ['pipe', 'pipe', 'ignore']
@@ -54,19 +57,19 @@ function getPnpmVersion () {
   return _pnpmVersion || '0.0.0'
 }
 
-exports.hasPnpmVersionOrLater = (version) => {
+export const hasPnpmVersionOrLater = (version) => {
   return semver.gte(getPnpmVersion(), version)
 }
 
-exports.hasPnpm3OrLater = () => {
-  return this.hasPnpmVersionOrLater('3.0.0')
+export const hasPnpm3OrLater = () => {
+  return hasPnpmVersionOrLater('3.0.0')
 }
 
 const _pnpmProjects = new LRU({
   max: 10,
   ttl: 1000
 })
-exports.hasProjectPnpm = (cwd) => {
+export const hasProjectPnpm = (cwd) => {
   if (_pnpmProjects.has(cwd)) {
     return checkPnpm(_pnpmProjects.get(cwd))
   }
@@ -80,7 +83,7 @@ const _npmProjects = new LRU({
   max: 10,
   ttl: 1000
 })
-exports.hasProjectNpm = (cwd) => {
+export const hasProjectNpm = (cwd) => {
   if (_npmProjects.has(cwd)) {
     return _npmProjects.get(cwd)
   }
@@ -91,7 +94,7 @@ exports.hasProjectNpm = (cwd) => {
 }
 
 let _hasGit
-exports.hasGit = () => {
+export const hasGit = () => {
   if (_hasGit != null) {
     return _hasGit
   }
@@ -107,7 +110,7 @@ const _gitProjects = new LRU({
   max: 10,
   ttl: 1000
 })
-exports.hasProjectGit = (cwd) => {
+export const hasProjectGit = (cwd) => {
   if (_gitProjects.has(cwd)) {
     return _gitProjects.get(cwd)
   }
